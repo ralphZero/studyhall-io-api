@@ -7,7 +7,7 @@
     "start": "tsc && cp package.json dist/package.json && firebase emulators:start",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "dev": "nodemon -w api.ts"
+    "dev": "ts-node index.ts"
   },
   "engines": {
     "node": "16"
