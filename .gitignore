@@ -2,3 +2,8 @@ node_modules
 package-lock.json
 secret.ts
 yarn.lock
+ui-debug.log
+.firebase
+
+# production
+dist
