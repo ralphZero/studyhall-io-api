@@ -1,16 +1,10 @@
-import { ObjectId } from "mongodb";
 import { getDb } from "../db/dbconnect";
 import { Hall } from "../models/hall";
+import DateServices from "./date-services";
 
 interface HallServices {
     getHallsOfCurrentUser(userId: string): Promise<Hall[]>,
     createHallAndReturnIt(hall: Hall): Promise<Hall>,
-}
-
-const getHallById = async (id: ObjectId): Promise<Hall> => {
-    const db = await getDb();
-    const hall = await db.collection<Hall>('halls').findOne({_id: id});
-    return hall as Hall;
 }
 
 const getHallsOfCurrentUser = async (userId: string): Promise<Hall[]> => {
@@ -21,12 +15,24 @@ const getHallsOfCurrentUser = async (userId: string): Promise<Hall[]> => {
 }
 
 const createHallAndReturnIt = async (hall : Hall) => {
+    // todo: check hall before doing anything
     const db = await getDb();
-    const result = await db.collection<Hall>('halls').insertOne(hall);
-    const insertedId = result.insertedId;
-    return getHallById(insertedId);
+    hall.dates = [];
+    const insertResult = await db.collection<Hall>('halls').insertOne(hall);
+    const insertedId = insertResult.insertedId;
+
+    const days =  DateServices.createDatesFromTimeframe(hall.startTimeStamp, hall.endTimeStamp);
+    
+    const updateResult = await db.collection<Hall>('halls').findOneAndUpdate(
+        { _id: insertedId }, 
+        { $set: { dates: days } }
+    );
+    const updatedHall: Hall = updateResult.value as Hall;
+    updatedHall.dates = days;
+
+    return updatedHall;
 }
 
-const hallServices: HallServices = { getHallsOfCurrentUser, createHallAndReturnIt };
+const HallServices: HallServices = { getHallsOfCurrentUser, createHallAndReturnIt };
 
-export default hallServices;
+export default HallServices;

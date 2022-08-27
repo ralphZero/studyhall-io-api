@@ -1,0 +1,99 @@
+[debug] [2022-08-26T21:30:18.537Z] ----------------------------------------------------------------------
+[debug] [2022-08-26T21:30:18.538Z] Command:       /usr/local/bin/node /usr/local/bin/firebase emulators:start
+[debug] [2022-08-26T21:30:18.538Z] CLI Version:   11.8.0
+[debug] [2022-08-26T21:30:18.538Z] Platform:      darwin
+[debug] [2022-08-26T21:30:18.538Z] Node Version:  v16.13.1
+[debug] [2022-08-26T21:30:18.542Z] Time:          Fri Aug 26 2022 17:30:18 GMT-0400 (Eastern Daylight Time)
+[debug] [2022-08-26T21:30:18.542Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-08-26T21:30:18.543Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2022-08-26T21:30:18.578Z] Field ".emulators.hosting.port" in "firebase.json" is possibly invalid: should be number
+[debug] [2022-08-26T21:30:18.580Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-08-26T21:30:18.580Z] > authorizing via signed-in user (placideralph@gmail.com)
+[info] i  emulators: Starting emulators: functions, hosting {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: functions, hosting"}}
+[debug] [2022-08-26T21:30:18.603Z] [hub] writing locator at /var/folders/tq/b756h98j3x3dgw3jwjffgwch0000gn/T/hub-studyhall-io-api.json
+[debug] [2022-08-26T21:30:18.604Z] Ignoring signal SIGINT due to short delay of 23ms
+[warn] ⚠  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: auth, firestore, database, pubsub, storage, eventarc {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mauth, firestore, database, pubsub, storage, eventarc\u001b[22m"}}
+[info] ✔  functions: Using node@16 from host. {"metadata":{"emulator":{"name":"functions"},"message":"Using node@16 from host."}}
+[debug] [2022-08-26T21:30:18.617Z] defaultcredentials: writing to file /Users/ralph/.config/firebase/placideralph_gmail_com_application_default_credentials.json
+[debug] [2022-08-26T21:30:18.619Z] Setting GAC to /Users/ralph/.config/firebase/placideralph_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to /Users/ralph/.config/firebase/placideralph_gmail_com_application_default_credentials.json"}}
+[debug] [2022-08-26T21:30:18.620Z] > refreshing access token with scopes: []
+[debug] [2022-08-26T21:30:18.620Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2022-08-26T21:30:18.620Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2022-08-26T21:30:18.756Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2022-08-26T21:30:18.756Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2022-08-26T21:30:18.797Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2022-08-26T21:30:18.797Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2022-08-26T21:30:18.851Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/studyhall-io-api/adminSdkConfig [none]
+[debug] [2022-08-26T21:30:19.168Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/studyhall-io-api/adminSdkConfig 200
+[debug] [2022-08-26T21:30:19.168Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/studyhall-io-api/adminSdkConfig {"projectId":"studyhall-io-api","storageBucket":"studyhall-io-api.appspot.com"}
+[debug] [2022-08-26T21:30:19.463Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/studyhall-io-api/sites 
+[debug] [2022-08-26T21:30:20.027Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/studyhall-io-api/sites 200
+[debug] [2022-08-26T21:30:20.027Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/studyhall-io-api/sites {"sites":[{"name":"projects/studyhall-io-api/sites/studyhall-io-api","defaultUrl":"https://studyhall-io-api.web.app","type":"DEFAULT_SITE"}]}
+[debug] [2022-08-26T21:30:20.027Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/studyhall-io-api/webApps/-/config [none]
+[debug] [2022-08-26T21:30:20.613Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/studyhall-io-api/webApps/-/config 200
+[debug] [2022-08-26T21:30:20.614Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/studyhall-io-api/webApps/-/config {"projectId":"studyhall-io-api","storageBucket":"studyhall-io-api.appspot.com","apiKey":"AIzaSyCbxAydcLMe_0zfJMbFDzyETWTW5SpEKXA","authDomain":"studyhall-io-api.firebaseapp.com","messagingSenderId":"862613217805"}
+[info] i  hosting: Serving hosting files from: dist {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mdist\u001b[22m"}}
+[info] ✔  hosting: Local server: http://localhost:3333 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://localhost:3333\u001b[22m\u001b[24m"}}
+[debug] [2022-08-26T21:30:20.711Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2022-08-26T21:30:20.711Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2022-08-26T21:30:20.711Z] Starting Emulator UI with command {"binary":"node","args":["/Users/ralph/.cache/firebase/emulators/ui-v1.9.0/server/server.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"/Users/ralph/.cache/firebase/emulators/ui-v1.9.0/server/server.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
+[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
+[debug] [2022-08-26T21:30:20.788Z] Web / API server started at localhost:4000
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at localhost:4000\n"}}
+[info] i  functions: Watching "/Users/ralph/Projects/Web/studyhall-io/studyhall-io-api/dist" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"/Users/ralph/Projects/Web/studyhall-io/studyhall-io-api/dist\" for Cloud Functions..."}}
+[debug] [2022-08-26T21:30:20.979Z] Validating nodejs source
+[debug] [2022-08-26T21:30:21.282Z] checkFunctionsSDKVersion encountered error:Invalid Version:  {}
+[debug] [2022-08-26T21:30:21.283Z] > [functions] package.json contents: {
+  "name": "studyhall-io-api",
+  "scripts": {
+    "build": "tsc && cp package.json dist/package.json",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "tsc && cp package.json dist/package.json && firebase emulators:start",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log",
+    "dev": "ts-node index.ts"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.2.0",
+    "firebase-functions": "^3.21.0",
+    "mongodb": "^4.9.0",
+    "typescript": "^4.8.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19",
+    "ts-node": "^10.9.1"
+  },
+  "private": true
+}
+[debug] [2022-08-26T21:30:21.283Z] Building nodejs source
+[debug] [2022-08-26T21:30:21.283Z] Analyzing nodejs backend spec
+[debug] [2022-08-26T21:30:21.614Z] Could not parse firebase-functions version '' into semver. Falling back to parseTriggers.
+[info] ✔  functions: Loaded functions definitions from source: . {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: ."}}
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://localhost:4000                │
+└─────────────────────────────────────────────────────────────┘
+
+┌───────────┬────────────────┬─────────────────────────────────┐
+│ Emulator  │ Host:Port      │ View in Emulator UI             │
+├───────────┼────────────────┼─────────────────────────────────┤
+│ Functions │ localhost:5001 │ http://localhost:4000/functions │
+├───────────┼────────────────┼─────────────────────────────────┤
+│ Hosting   │ localhost:3333 │ n/a                             │
+└───────────┴────────────────┴─────────────────────────────────┘
+  Emulator Hub running at localhost:4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
