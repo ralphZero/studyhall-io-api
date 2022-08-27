@@ -1,4 +1,5 @@
 import { PlanDate } from "../models/plandate";
+import moment from 'moment';
 import { v4 as uuid } from 'uuid';
 
 interface DateServices {
@@ -6,27 +7,21 @@ interface DateServices {
 }
 
 const createPlanDateList = (startDateString: string, endDateString: string): PlanDate[] => {
-    const startDate: Date = new Date(startDateString);
-    const endDate: Date = new Date(endDateString);
-
-    console.log(startDate, endDate, "<--- fron date.services");
-    
+    const startDate: Date = moment(startDateString).toDate();
+    const endDate: Date = moment(endDateString).toDate();
 
     let currentDate: Date = startDate;
     const dateArray: PlanDate[] = [];
-    
-    var days: string[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
     while (currentDate <= endDate) {
         const planDate: PlanDate = {
             id: uuid(),
-            date: currentDate,
-            title: `${days[currentDate.getDay()]} ${currentDate.getMonth()}/${currentDate.getDate()}`,
+            date: moment(currentDate.toString()).toDate(),
+            title: moment(currentDate.toString()).format("dddd Do"),
         }
         dateArray.push(planDate);
-        currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
+        currentDate = moment(currentDate.toString()).add(1, 'day').toDate();
     }
-    console.log(dateArray);
     
     return dateArray;
 }
