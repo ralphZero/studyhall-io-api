@@ -4,6 +4,7 @@ secret.ts
 yarn.lock
 ui-debug.log
 .firebase
+firebase-debug.log
 
 # production
 dist
