@@ -1,6 +1,8 @@
 import {Router, Request, Response} from 'express';
 import { Hall } from '../models/hall';
+import { Task } from '../models/task';
 import HallServices from '../services/hall-services';
+import { TaskServices } from '../services/task-services';
 
 export const hallRouter = Router();
 
@@ -24,6 +26,9 @@ hallRouter.post('/halls', async (req: Request, res: Response) => {
     }
 });
 
-hallRouter.patch('/halls/:hallId/tasks', (req: Request, res: Response) => {
-    
+hallRouter.patch('/halls/:hallId/tasks', async (req: Request, res: Response) => {
+    const { hallId } = req.params;
+    const task: Task = req.body;
+    const result: Hall = await TaskServices.createTaskAndReturnHall(hallId, task);
+    res.status(201).json({success: true, result});
 });

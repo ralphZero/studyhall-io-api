@@ -1,4 +1,5 @@
 import { PlanDate } from "./plandate";
+import { Task } from "./task";
 
 export interface Hall {
     id?: string,
@@ -6,5 +7,7 @@ export interface Hall {
     title: string,
     startTimeStamp: string,
     endTimeStamp: string,
-    dates: PlanDate[]
+    progress: number,
+    dates: PlanDate[],
+    tasks: Task[],
 }

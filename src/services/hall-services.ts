@@ -18,6 +18,9 @@ const createHallAndReturnIt = async (hall : Hall): Promise<Hall> => {
     // todo: check hall before doing anything
     const db = await getDb();
     hall.dates = [];
+    hall.tasks = [];
+    hall.progress = 0;
+    
     const insertResult = await db.collection<Hall>('halls').insertOne(hall);
     const insertedId = insertResult.insertedId;
 

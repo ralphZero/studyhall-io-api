@@ -1,23 +1,27 @@
 import { ObjectId } from "mongodb";
 import { v4 as uuid } from 'uuid';
 import { getDb } from "../db/dbconnect";
+import { Hall } from "../models/hall";
 import { Task } from "../models/task";
 
 interface TaskServices {
-    createTask(hallId: string, task: Task): Promise<Task>;
+    createTaskAndReturnHall(hallId: string, task: Task): Promise<Hall>;
 }
 
-const createTask = async (hallId: string, task: Task): Promise<Task> => {
+const createTaskAndReturnHall = async (hallId: string, task: Task): Promise<Hall> => {
     const db = await getDb();
     task.id = uuid();
 
-    const result = await db.collection<Task>('halls').findOneAndUpdate(
+    await db.collection<Hall>('halls').findOneAndUpdate(
         { _id: new ObjectId(hallId)},
         { $push: { tasks: task } }
     );
 
-    const createdTask = result.value as Task;
-    return createdTask;
+    const updatedHall = await db.collection<Hall>('halls').findOne(
+        {_id: new ObjectId(hallId)}
+    );
+
+    return updatedHall as Hall;
 };
 
-export const TaskServices: TaskServices = { createTask };
+export const TaskServices: TaskServices = { createTaskAndReturnHall };
