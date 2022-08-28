@@ -14,7 +14,7 @@ const getHallsOfCurrentUser = async (userId: string): Promise<Hall[]> => {
     return halls;
 }
 
-const createHallAndReturnIt = async (hall : Hall) => {
+const createHallAndReturnIt = async (hall : Hall): Promise<Hall> => {
     // todo: check hall before doing anything
     const db = await getDb();
     hall.dates = [];
