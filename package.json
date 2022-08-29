@@ -5,7 +5,7 @@
     "serve": "firebase emulators:start --only functions",
     "shell": "firebase functions:shell",
     "start": "tsc && cp package.json dist/package.json && firebase emulators:start",
-    "deploy": "firebase deploy --only functions",
+    "deploy": "yarn build && firebase deploy --only functions",
     "logs": "firebase functions:log",
     "dev": "ts-node index.ts"
   },

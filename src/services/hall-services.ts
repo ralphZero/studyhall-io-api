@@ -1,3 +1,4 @@
+import moment from "moment";
 import { getDb } from "../db/dbconnect";
 import { Hall } from "../models/hall";
 import DateServices from "./date-services";
@@ -19,6 +20,7 @@ const createHallAndReturnIt = async (hall : Hall): Promise<Hall> => {
     const db = await getDb();
     hall.dates = [];
     hall.tasks = [];
+    hall.createdAt = moment(Date.now()).toDate().toString();
     hall.progress = 0;
     
     const insertResult = await db.collection<Hall>('halls').insertOne(hall);

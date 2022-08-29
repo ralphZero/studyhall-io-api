@@ -5,6 +5,8 @@ export interface Hall {
     id?: string,
     userId: string,
     title: string,
+    description?: string,
+    createdAt: string,
     startTimeStamp: string,
     endTimeStamp: string,
     progress: number,
