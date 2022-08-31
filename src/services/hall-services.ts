@@ -22,20 +22,14 @@ const createHallAndReturnIt = async (hall : Hall): Promise<Hall> => {
     hall.tasks = [];
     hall.createdAt = moment(Date.now()).toDate().toString();
     hall.progress = 0;
-    
+
+    const days = DateServices.createDatesFromTimeframe(hall.startTimeStamp, hall.endTimeStamp);
+    hall.dates = days;
+
     const insertResult = await db.collection<Hall>('halls').insertOne(hall);
-    const insertedId = insertResult.insertedId;
 
-    const days =  DateServices.createDatesFromTimeframe(hall.startTimeStamp, hall.endTimeStamp);
-    
-    const updateResult = await db.collection<Hall>('halls').findOneAndUpdate(
-        { _id: insertedId }, 
-        { $set: { dates: days } }
-    );
-    const updatedHall: Hall = updateResult.value as Hall;
-    updatedHall.dates = days;
-
-    return updatedHall;
+    const insertedHall: Hall = await db.collection<Hall>('halls').findOne({_id: insertResult.insertedId}) as Hall;
+    return insertedHall;
 }
 
 const HallServices: HallServices = { getHallsOfCurrentUser, createHallAndReturnIt };

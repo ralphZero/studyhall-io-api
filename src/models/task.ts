@@ -1,7 +1,7 @@
 export interface Task {
     id?: string,
     dateId: string,
-    subject: string,
-    title: string,
+    label: string,
+    task: string,
     isComplete: boolean,
 }
