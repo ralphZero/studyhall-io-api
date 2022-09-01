@@ -32,3 +32,10 @@ hallRouter.patch('/halls/:hallId/tasks', async (req: Request, res: Response) => 
     const result: Hall = await TaskServices.createTaskAndReturnHall(hallId, task);
     res.status(201).json({success: true, result});
 });
+
+hallRouter.patch('/halls/:hallId/tasks/:taskId', async (req: Request, res: Response) => {
+    const { hallId, taskId } = req.params;
+    const task: Task = req.body;
+    const result: Hall = await TaskServices.updateTaskAndReturnHall(hallId, taskId, task);
+    res.status(201).json({ succes: true, result });
+});

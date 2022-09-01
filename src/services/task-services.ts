@@ -6,6 +6,7 @@ import { Task } from "../models/task";
 
 interface TaskServices {
     createTaskAndReturnHall(hallId: string, task: Task): Promise<Hall>;
+    updateTaskAndReturnHall(hallId: string, taskId: string, task: Task): Promise<Hall>;
 }
 
 const createTaskAndReturnHall = async (hallId: string, task: Task): Promise<Hall> => {
@@ -13,15 +14,25 @@ const createTaskAndReturnHall = async (hallId: string, task: Task): Promise<Hall
     task.id = uuid();
 
     await db.collection<Hall>('halls').findOneAndUpdate(
-        { _id: new ObjectId(hallId)},
+        { _id: new ObjectId(hallId) },
         { $push: { tasks: task } }
     );
 
     const updatedHall = await db.collection<Hall>('halls').findOne(
-        {_id: new ObjectId(hallId)}
+        { _id: new ObjectId(hallId) }
     );
 
     return updatedHall as Hall;
 };
 
-export const TaskServices: TaskServices = { createTaskAndReturnHall };
+const updateTaskAndReturnHall = async (hallId: string, taskId: string, task: Task): Promise<Hall> => {
+    const db = await getDb();
+    const query = { _id: new ObjectId(hallId), 'tasks.id': taskId };
+    await db.collection<Hall>('halls').updateOne(query, { $set: { 'tasks.$': task } });
+    const updatedHall = await db.collection<Hall>('halls').findOne(
+        { _id: new ObjectId(hallId) }
+    );
+    return updatedHall as Hall;
+}
+
+export const TaskServices: TaskServices = { createTaskAndReturnHall, updateTaskAndReturnHall };
