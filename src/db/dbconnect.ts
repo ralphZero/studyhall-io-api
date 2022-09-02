@@ -4,5 +4,5 @@ import { uri } from "./secret";
 export const getDb = async () => {
   const client = new MongoClient(uri);
   await client.connect();
-  return client.db("student_hall");
+  return client.db("hallify");
 };
