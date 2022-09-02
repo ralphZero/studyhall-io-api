@@ -28,11 +28,22 @@ const createTaskAndReturnHall = async (hallId: string, task: Task): Promise<Hall
 const updateTaskAndReturnHall = async (hallId: string, taskId: string, task: Task): Promise<Hall> => {
     const db = await getDb();
     const query = { _id: new ObjectId(hallId), 'tasks.id': taskId };
+
     await db.collection<Hall>('halls').updateOne(query, { $set: { 'tasks.$': task } });
     const updatedHall = await db.collection<Hall>('halls').findOne(
         { _id: new ObjectId(hallId) }
-    );
-    return updatedHall as Hall;
+    ) as Hall;
+
+    const totalTasks = updatedHall.tasks.length;
+    const totalCompletedTasks = updatedHall.tasks.filter((task) => task.isComplete === true).length;
+    const progress = totalCompletedTasks / totalTasks;
+
+    await db.collection<Hall>('halls').updateOne({ _id: new ObjectId(hallId) }, { $set: { 'progress': progress } });
+    const newHall = await db.collection<Hall>('halls').findOne(
+        { _id: new ObjectId(hallId) }
+    ) as Hall;
+    
+    return newHall as Hall;
 }
 
 export const TaskServices: TaskServices = { createTaskAndReturnHall, updateTaskAndReturnHall };
