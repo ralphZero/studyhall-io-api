@@ -22,8 +22,10 @@ const createHallAndReturnIt = async (hall : Hall): Promise<Hall> => {
     hall.tasks = [];
     hall.createdAt = moment(Date.now()).toDate().toString();
     hall.progress = 0;
+    const formattedStart = moment(hall.startTimeStamp).format("YYYY-DD-MM");
+    const formattedEnd = moment(hall.endTimeStamp).format("YYYY-DD-MM");
 
-    const days = DateServices.createDatesFromTimeframe(hall.startTimeStamp, hall.endTimeStamp);
+    const days = DateServices.createDatesFromTimeframe(formattedStart, formattedEnd);
     hall.dates = days;
 
     const insertResult = await db.collection<Hall>('halls').insertOne(hall);
