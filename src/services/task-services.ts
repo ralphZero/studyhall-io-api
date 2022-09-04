@@ -13,9 +13,21 @@ const createTaskAndReturnHall = async (hallId: string, task: Task): Promise<Hall
     const db = await getDb();
     task.id = uuid();
 
-    await db.collection<Hall>('halls').findOneAndUpdate(
+    const updated = await db.collection<Hall>('halls').findOneAndUpdate(
         { _id: new ObjectId(hallId) },
         { $push: { tasks: task } }
+    );
+
+    const tempHall = updated.value as Hall;
+    tempHall.tasks.push(task);
+
+    const totalTasks = tempHall.tasks.length;
+    const totalCompletedTasks = tempHall.tasks.filter((task) => task.isComplete === true).length;
+    const progress = totalCompletedTasks / totalTasks;
+
+    await db.collection<Hall>('halls').updateOne(
+        {_id: new ObjectId(hallId)},
+        { $set: { progress: progress } }
     );
 
     const updatedHall = await db.collection<Hall>('halls').findOne(
