@@ -14,8 +14,8 @@ const createTaskAndReturnHall = async (hallId: string, task: Task): Promise<Hall
     task.id = uuid();
 
     const updated = await db.collection<Hall>('halls').findOneAndUpdate(
-        { _id: new ObjectId(hallId) },
-        { $push: { tasks: task } }
+        { _id: new ObjectId(hallId), "dates.id": task.dateId },
+        { $push: { tasks: task, "dates.$.taskIds": task.id } }
     );
 
     const tempHall = updated.value as Hall;

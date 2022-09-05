@@ -18,6 +18,7 @@ const createPlanDateList = (startDateString: string, endDateString: string): Pla
             id: uuid(),
             date: moment(currentDate.toString()).toDate(),
             title: moment(currentDate.toString()).format("dddd Do"),
+            taskIds: []
         }
         dateArray.push(planDate);
         currentDate = moment(currentDate.toString()).add(1, 'day').toDate();
