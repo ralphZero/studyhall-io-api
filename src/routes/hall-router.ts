@@ -42,7 +42,7 @@ hallRouter.patch('/halls/:hallId/tasks/:taskId', async (req: Request, res: Respo
     res.status(201).json({ succes: true, result });
 });
 
-hallRouter.patch('/halls/"hallId/dates', async (req: Request, res: Response) => {
+hallRouter.patch('/halls/:hallId/dates', async (req: Request, res: Response) => {
     const { hallId } = req.params;
     const dates: PlanDate[] = req.body;
     const result = await DateServices.updateDatesInHall(hallId, dates);
