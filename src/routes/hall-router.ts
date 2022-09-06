@@ -1,6 +1,8 @@
 import {Router, Request, Response} from 'express';
 import { Hall } from '../models/hall';
+import { PlanDate } from '../models/plandate';
 import { Task } from '../models/task';
+import DateServices from '../services/date-services';
 import HallServices from '../services/hall-services';
 import { TaskServices } from '../services/task-services';
 
@@ -38,4 +40,11 @@ hallRouter.patch('/halls/:hallId/tasks/:taskId', async (req: Request, res: Respo
     const task: Task = req.body;
     const result: Hall = await TaskServices.updateTaskAndReturnHall(hallId, taskId, task);
     res.status(201).json({ succes: true, result });
+});
+
+hallRouter.patch('/halls/"hallId/dates', async (req: Request, res: Response) => {
+    const { hallId } = req.params;
+    const dates: PlanDate[] = req.body;
+    const result = await DateServices.updateDatesInHall(hallId, dates);
+    res.status(201).json({ success: true, result });
 });
