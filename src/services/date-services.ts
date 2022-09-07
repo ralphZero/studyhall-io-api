@@ -8,9 +8,10 @@ import { ObjectId } from "mongodb";
 interface DateServices {
     createDatesFromTimeframe(startDate: string, endDate: string): PlanDate[];
     updateDatesInHall(hallId: string, dates: PlanDate[]): Promise<Hall>;
+    generateIdsFromDates(dates: PlanDate[]): string[]
 }
 
-const createPlanDateList = (startDateString: string, endDateString: string): PlanDate[] => {
+const createDatesFromTimeframe = (startDateString: string, endDateString: string): PlanDate[] => {
     const newStartDateString = startDateString + "T12:00:00.000Z";
     const newEndDateString = endDateString + "T12:00:00.000Z";
 
@@ -31,14 +32,15 @@ const createPlanDateList = (startDateString: string, endDateString: string): Pla
         dateArray.push(planDate);
         currentDate = moment(currentDate).add(1, "day");
     }
-
+    
     return dateArray;
 }
 
-const createDatesFromTimeframe = (startDate: string, endDate: string): PlanDate[] => {
-    const planDates = createPlanDateList(startDate, endDate);
-    return planDates;
+const generateIdsFromDates = (dates: PlanDate[]) => {
+    const dateIds = dates.map((date) => date.id);
+    return dateIds;
 }
+
 
 const updateDatesInHall = async (hallId: string, dates: PlanDate[]) => {
     const db = await getDb();
@@ -51,6 +53,6 @@ const updateDatesInHall = async (hallId: string, dates: PlanDate[]) => {
     return updatedHall;
 }
 
-const DateServices: DateServices = { createDatesFromTimeframe, updateDatesInHall };
+const DateServices: DateServices = { createDatesFromTimeframe, updateDatesInHall, generateIdsFromDates };
 
 export default DateServices;

@@ -16,17 +16,24 @@ const getHallsOfCurrentUser = async (userId: string): Promise<Hall[]> => {
 }
 
 const createHallAndReturnIt = async (hall : Hall): Promise<Hall> => {
-    // todo: check hall before doing anything
     const db = await getDb();
     hall.dates = [];
     hall.tasks = [];
     hall.createdAt = moment(Date.now()).toDate().toString();
     hall.progress = 0;
+
     const formattedStart = moment(hall.startTimeStamp).format("YYYY-MM-DD");
     const formattedEnd = moment(hall.endTimeStamp).format("YYYY-MM-DD");
 
+
     const days = DateServices.createDatesFromTimeframe(formattedStart, formattedEnd);
+
+
     hall.dates = days;
+
+
+    hall.dateIds = DateServices.generateIdsFromDates(days);
+    
 
     const insertResult = await db.collection<Hall>('halls').insertOne(hall);
 
