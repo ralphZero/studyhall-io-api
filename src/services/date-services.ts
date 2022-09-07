@@ -11,23 +11,27 @@ interface DateServices {
 }
 
 const createPlanDateList = (startDateString: string, endDateString: string): PlanDate[] => {
-    const startDate: Date = moment(startDateString).toDate();
-    const endDate: Date = moment(endDateString).toDate();
+    const newStartDateString = startDateString + "T12:00:00.000Z";
+    const newEndDateString = endDateString + "T12:00:00.000Z";
 
-    let currentDate: Date = startDate;
+    const startDate = moment(newStartDateString);
+    const endDate = moment(newEndDateString);
+
+    let currentDate = startDate;
+
     const dateArray: PlanDate[] = [];
 
     while (currentDate <= endDate) {
-        const planDate: PlanDate = {
+        const planDate = {
             id: uuid(),
-            date: moment(currentDate.toString()).toDate(),
-            title: moment(currentDate.toString()).format("dddd Do"),
+            date: moment(currentDate.toISOString()).toDate(),
+            title: moment(currentDate.toISOString()).format("dddd Do"),
             taskIds: []
-        }
+        };
         dateArray.push(planDate);
-        currentDate = moment(currentDate.toString()).add(1, 'day').toDate();
+        currentDate = moment(currentDate).add(1, "day");
     }
-    
+
     return dateArray;
 }
 
@@ -39,7 +43,7 @@ const createDatesFromTimeframe = (startDate: string, endDate: string): PlanDate[
 const updateDatesInHall = async (hallId: string, dates: PlanDate[]) => {
     const db = await getDb();
     const result = await db.collection<Hall>('halls').findOneAndUpdate(
-        { _id: new ObjectId(hallId) }, 
+        { _id: new ObjectId(hallId) },
         { $set: { dates: dates } }
     );
     const updatedHall = result.value as Hall;
