@@ -28,6 +28,12 @@ hallRouter.post('/halls', async (req: Request, res: Response) => {
     }
 });
 
+hallRouter.delete('/halls/:hallId', async (req: Request, res: Response) => {
+    const { hallId } = req.params;
+    const result = await HallServices.deleteHall(hallId);
+    res.status(200).json({ result, success: true });
+});
+
 hallRouter.patch('/halls/:hallId/tasks', async (req: Request, res: Response) => {
     const { hallId } = req.params;
     const task: Task = req.body;

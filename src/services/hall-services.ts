@@ -1,4 +1,5 @@
 import moment from "moment";
+import { ObjectId } from "mongodb";
 import { getDb } from "../db/dbconnect";
 import { Hall } from "../models/hall";
 import DateServices from "./date-services";
@@ -6,6 +7,7 @@ import DateServices from "./date-services";
 interface HallServices {
     getHallsOfCurrentUser(userId: string): Promise<Hall[]>,
     createHallAndReturnIt(hall: Hall): Promise<Hall>,
+    deleteHall(hallId: string): Promise<Hall>,
 }
 
 const getHallsOfCurrentUser = async (userId: string): Promise<Hall[]> => {
@@ -41,6 +43,12 @@ const createHallAndReturnIt = async (hall : Hall): Promise<Hall> => {
     return insertedHall;
 }
 
-const HallServices: HallServices = { getHallsOfCurrentUser, createHallAndReturnIt };
+const deleteHall = async (hallId: string) => {
+    const db = await getDb();
+    const del = await db.collection<Hall>("halls").findOneAndDelete({_id: new ObjectId(hallId)});
+    return del.value as Hall;
+}
+
+const HallServices: HallServices = { getHallsOfCurrentUser, createHallAndReturnIt, deleteHall };
 
 export default HallServices;
