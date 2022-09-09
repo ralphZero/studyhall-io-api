@@ -10,4 +10,5 @@ export interface Task {
     subtasksCount: number,
     subtasksCompletedCount: number,
     progress: number,
+    priority: number,
 }
