@@ -1,4 +1,5 @@
 import {Router, Request, Response} from 'express';
+import { getAuth } from 'firebase-admin/auth';
 import { Hall } from '../models/hall';
 import { PlanDate } from '../models/plandate';
 import { Task } from '../models/task';
@@ -19,9 +20,20 @@ hallRouter.get('/halls', async (req: Request, res: Response) => {
 });
 
 hallRouter.post('/halls', async (req: Request, res: Response) => {
-    const newHall: Hall = req.body
-    if (!newHall.userId) {
+    const newHall: Hall = req.body;
+    
+    const token = req.headers.authorization;
+    
+    if(!token) {
+        res.status(400).send({ success: false, message: "token required" });
+        return;
+    }
+
+    const user = await getAuth().verifyIdToken(token);
+
+    if (!newHall.userId || newHall.userId != user.uid) {
         res.status(400).json({ success: false, message: "A user id is required." })
+        return;
     } else {
         const result = await HallServices.createHallAndReturnIt(newHall)
         res.status(201).json({result, success: true});
