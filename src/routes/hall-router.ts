@@ -1,4 +1,4 @@
-import {Router, Request, Response} from 'express';
+import {Router, Request, Response, NextFunction} from 'express';
 import { getAuth } from 'firebase-admin/auth';
 import { Hall } from '../models/hall';
 import { PlanDate } from '../models/plandate';
@@ -6,10 +6,13 @@ import { Task } from '../models/task';
 import DateServices from '../services/date-services';
 import HallServices from '../services/hall-services';
 import { TaskServices } from '../services/task-services';
+import { verifyToken } from '../utils/verify-token';
 
 export const hallRouter = Router();
 
-hallRouter.get('/halls', async (req: Request, res: Response) => {
+hallRouter.use(verifyToken);
+
+hallRouter.get('/halls', async (req: Request, res: Response, next: NextFunction) => {
     const uid: string = req.query.uid as string;
     if (!uid) {
         res.status(400).json({message: "A user id is required", success: false});

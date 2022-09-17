@@ -5,6 +5,7 @@ yarn.lock
 ui-debug.log
 .firebase
 firebase-debug.log
+service_account.json
 
 # production
 dist
