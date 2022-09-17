@@ -6,8 +6,11 @@ import { Task } from '../models/task';
 import DateServices from '../services/date-services';
 import HallServices from '../services/hall-services';
 import { TaskServices } from '../services/task-services';
+import { verifyToken } from '../utils/verify-token';
 
 export const hallRouter = Router();
+
+hallRouter.use(verifyToken);
 
 hallRouter.get('/halls', async (req: Request, res: Response) => {
     const uid: string = req.query.uid as string;
