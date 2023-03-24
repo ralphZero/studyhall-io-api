@@ -26,7 +26,7 @@ const createDatesFromTimeframe = (startDateString: string, endDateString: string
         const planDate = {
             id: uuid(),
             date: moment(currentDate.toISOString()).toDate(),
-            title: moment(currentDate.toISOString()).format("dddd Do"),
+            title: moment(currentDate.toISOString()).format("MMM DD, yyyy"),
             taskIds: []
         };
         dateArray.push(planDate);

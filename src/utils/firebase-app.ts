@@ -1,12 +1,12 @@
-import { initializeApp, getApps, App, cert } from "firebase-admin/app";
+import { initializeApp, getApps, App, cert, ServiceAccount } from "firebase-admin/app";
 import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-const serviceAccount = {
-    projectId: process.env.project_id as string,
-    privateKey: process.env.private_key as string,
-    clientEmail: process.env.client_email as string,
+const serviceAccount: ServiceAccount = {
+    projectId: process.env.PROJECT_ID as string,
+    privateKey: process.env.PRIVATE_KEY as string,
+    clientEmail: process.env.CLIENT_EMAIL as string,
 };
 
 let app: App;
