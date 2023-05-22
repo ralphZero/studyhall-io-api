@@ -6,6 +6,8 @@ ui-debug.log
 .firebase
 firebase-debug.log
 .env
+.env.dev
+.env.prod
 
 # production
 dist
