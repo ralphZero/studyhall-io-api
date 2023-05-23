@@ -1,5 +1,9 @@
 {
   "projects": {
-    "default": "studyhall-io-api"
-  }
+    "default": "studyhall-io-api",
+    "dev": "studyhall-io-api",
+    "prod": "studyhall-io-api"
+  },
+  "targets": {},
+  "etags": {}
 }
