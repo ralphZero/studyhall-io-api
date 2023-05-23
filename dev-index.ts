@@ -1,9 +1,9 @@
 import { devApi } from './index';
-import { isDevelop } from './src/utils/environment';
+import { isLocal } from './src/utils/environment';
 
 const port: number = 8001;
 
-if (isDevelop()) {
+if (isLocal()) {
   devApi.listen(port, () => {
     console.log(`Started on ${process.env.NODE_ENV}:`, port);
   });
