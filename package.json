@@ -1,11 +1,11 @@
 {
   "name": "studyhall-io-api",
   "scripts": {
-    "build": "tsc && cp package.json dist/package.json && cp .env dist/.env",
+    "build": "tsc && cp package.json dist/package.json && cp .env dist/.env && cp .env.dev dist/.env.dev && cp .env.prod dist/.env.prod",
     "serve": "firebase emulators:start --only functions",
     "shell": "firebase functions:shell",
-    "start": "tsc && cp package.json dist/package.json && firebase emulators:start",
-    "deploy": "yarn build && firebase deploy --only functions",
+    "start": "tsc && cp package.json dist/package.json && cp .env dist/.env && cp .env.dev dist/.env.dev && cp .env.prod dist/.env.prod && firebase emulators:start",
+    "deploy": "yarn build-prod && firebase deploy --only functions",
     "logs": "firebase functions:log",
     "dev": "ts-node dev-index.ts"
   },
