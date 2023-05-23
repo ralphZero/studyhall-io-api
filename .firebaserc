@@ -1,8 +1,7 @@
 {
   "projects": {
-    "default": "studyhall-io-api",
-    "dev": "studyhall-io-api",
-    "prod": "studyhall-io-api"
+    "prod": "studyhall-io-api",
+    "dev": "studyhall-io-dev-api"
   },
   "targets": {},
   "etags": {}
