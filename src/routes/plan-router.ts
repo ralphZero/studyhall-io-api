@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import { verifyToken } from '../utils/verify-token';
+import { endpoints } from '../utils/endpoints';
 
+// route --> api/v2/plans
 export const planRouter = Router();
 
-planRouter.use(verifyToken);
+planRouter.get(endpoints.route.base, getAllPlans);
