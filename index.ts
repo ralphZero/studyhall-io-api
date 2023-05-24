@@ -4,7 +4,7 @@ import cors from 'cors';
 import { hallRouter } from './src/routes/hall-router';
 import * as dotenv from 'dotenv';
 import { isDevelop } from './src/utils/environment';
-import { planRouter } from './src/routes/plan-router';
+import { planRouter } from './src/routes/v2/plan-router';
 
 dotenv.config();
 const app = express();

@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { verifyToken } from '../utils/verify-token';
-import { endpoints } from '../utils/endpoints';
+import { verifyToken } from '../../utils/verify-token';
+import { endpoints } from '../../utils/endpoints';
 import { planRouter } from './plan-router';
 import { taskRouter } from './task-router';
 
