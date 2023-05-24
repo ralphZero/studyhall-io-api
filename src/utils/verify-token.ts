@@ -2,6 +2,7 @@ import { NextFunction, Response, Request } from 'express';
 import { getAuth } from 'firebase-admin/auth';
 import app from '../utils/firebase-app';
 import { checkWhitelist } from './check-whitelist';
+import Context from './user-context';
 
 export const verifyToken = async (
   req: Request,
@@ -20,6 +21,7 @@ export const verifyToken = async (
       checkWhitelist(
         result,
         () => {
+          Context.bind(result);
           next();
         },
         ({ code, message }) => {
