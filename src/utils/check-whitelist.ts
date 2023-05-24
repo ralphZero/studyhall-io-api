@@ -1,4 +1,3 @@
-import { NextFunction } from 'express';
 import { isDevelop } from './environment';
 import { DecodedIdToken } from 'firebase-admin/auth';
 
@@ -9,7 +8,7 @@ interface CallBackError {
 
 export const checkWhitelist = (
   result: DecodedIdToken,
-  next: NextFunction,
+  next: () => void,
   errorCallback: (error: CallBackError) => void
 ) => {
   if (isDevelop()) {

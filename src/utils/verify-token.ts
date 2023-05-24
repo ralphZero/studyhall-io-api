@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response, Request } from 'express';
 import { getAuth } from 'firebase-admin/auth';
 import app from '../utils/firebase-app';
 import { checkWhitelist } from './check-whitelist';
@@ -17,10 +17,16 @@ export const verifyToken = async (
   try {
     const result = await getAuth(app).verifyIdToken(token);
     if (result) {
-      checkWhitelist(result, next, ({ code, message }) => {
-        res.status(code).send({ success: false, message });
-        return;
-      });
+      checkWhitelist(
+        result,
+        () => {
+          next();
+        },
+        ({ code, message }) => {
+          res.status(code).send({ success: false, message });
+          return;
+        }
+      );
     } else {
       res.status(401).send({ success: false, message: 'Unauthorized access' });
       return;
