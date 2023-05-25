@@ -1,16 +1,14 @@
 import { DecodedIdToken } from 'firebase-admin/auth';
+import { createNamespace, getNamespace } from 'continuation-local-storage';
 
 export default class UserContext {
-  static _bindings = new WeakMap<DecodedIdToken, UserContext>();
+  static set = (user: DecodedIdToken) => {
+    const session = createNamespace('user_ctx');
+    session.set<DecodedIdToken>('user', user);
+  };
 
-  constructor() {}
-
-  static bind(user: DecodedIdToken): void {
-    const ctx = new UserContext();
-    UserContext._bindings.set(user, ctx);
-  }
-
-  static get(user: DecodedIdToken): UserContext | null {
-    return UserContext._bindings.get(user) || null;
-  }
+  static get = () => {
+    const session = getNamespace('user_ctx');
+    return session?.get<DecodedIdToken>('user');
+  };
 }
