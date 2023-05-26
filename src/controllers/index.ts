@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getAllPlans } from './getAllPlans';
+import { getAllPlans } from './plans/getAllPlans';
 
 interface PlanControllerType {
   getAllPlans: (req: Request, res: Response) => void;

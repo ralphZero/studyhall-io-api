@@ -2,7 +2,7 @@ import { getDb } from '../../../db/dbconnect';
 import { Plan } from '../../../models/plan';
 import UserContext from '../../../utils/user-context';
 
-interface PlanService {
+interface PlanServiceType {
   getAllPlansFromDb(): Promise<Plan[]>;
 }
 
@@ -15,4 +15,4 @@ const getAllPlansFromDb = async (): Promise<Plan[]> => {
   return plans;
 };
 
-export const planServices: PlanService = { getAllPlansFromDb };
+export const PlanServices: PlanServiceType = { getAllPlansFromDb };

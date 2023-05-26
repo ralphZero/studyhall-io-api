@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { endpoints } from '../../utils/endpoints';
-import { PlanController } from '../../controllers/plans';
+import { PlanController } from '../../controllers';
 
 // route --> api/v2/plans
 export const planRouter = Router();
