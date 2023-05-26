@@ -5,8 +5,8 @@ export const getAllPlans = async (req: Request, res: Response) => {
   // call method to get all plans
   try {
     const plans = await PlanServices.getAllPlansFromDb();
-    res.status(200).send({ success: 'true', data: plans, error: null });
+    res.status(200).send({ success: true, data: plans, error: null });
   } catch (e) {
-    res.status(500).send({ success: false, message: 'Unexpected error' });
+    res.status(500).send({ success: false, data: null, error: e });
   }
 };

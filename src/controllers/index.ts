@@ -1,10 +1,7 @@
-import { Request, Response } from 'express';
 import { getAllPlans } from './plans/getAllPlans';
+import { postNewPlan } from './plans/postNewPlan';
 
-interface PlanControllerType {
-  getAllPlans: (req: Request, res: Response) => void;
-}
-
-export const PlanController: PlanControllerType = {
+export const PlanController = {
   getAllPlans,
+  postNewPlan,
 };

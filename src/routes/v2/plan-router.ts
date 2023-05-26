@@ -6,3 +6,5 @@ import { PlanController } from '../../controllers';
 export const planRouter = Router();
 
 planRouter.get(endpoints.route.base, PlanController.getAllPlans);
+
+planRouter.post(endpoints.route.base, PlanController.postNewPlan);
