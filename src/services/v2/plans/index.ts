@@ -1,6 +1,6 @@
 import { InsertOneResult } from 'mongodb';
 import { getDb } from '../../../db/dbconnect';
-import { Plan } from '../../../models/plan';
+import { Plan } from '../../../models/v2/plan';
 import { UserContext } from '../../../utils/user-context';
 import { PlanDto } from '../../../dto/plan.dto';
 
