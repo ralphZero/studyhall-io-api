@@ -1,4 +1,4 @@
-import { isDevelop } from './environment';
+import { isDevelop, isLocal } from './environment';
 import { DecodedIdToken } from 'firebase-admin/auth';
 
 interface CallBackError {
@@ -11,7 +11,8 @@ export const checkWhitelist = (
   next: () => void,
   errorCallback: (error: CallBackError) => void
 ) => {
-  if (isDevelop()) {
+  if (isLocal()) {
+  } else if (isDevelop()) {
     const whiteList = JSON.parse(process.env.IAM_WHITELIST as string);
 
     if (Array.isArray(whiteList)) {
