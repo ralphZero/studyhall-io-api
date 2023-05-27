@@ -5,7 +5,7 @@ export interface Plan {
   description?: string;
   createdAt: string;
   updatedAt: string;
-  startTimeStamp: string;
-  endTimeStamp: string;
+  startTimestamp: string;
+  endTimestamp: string;
   progress: number;
 }
