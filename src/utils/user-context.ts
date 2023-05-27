@@ -15,7 +15,6 @@ const get = () => {
   if (namespace.active) {
     const session = namespace.get('session') || {};
     const user = JSON.parse(session['user'] as string) as DecodedIdToken;
-    console.log(`user get --> ${user} %c`, 'color:magenta');
     return user;
   }
   return undefined;

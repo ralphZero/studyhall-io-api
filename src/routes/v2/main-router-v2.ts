@@ -3,11 +3,9 @@ import { verifyToken } from '../../utils/verify-token';
 import { endpoints } from '../../utils/endpoints';
 import { planRouter } from './plan-router';
 import { taskRouter } from './task-router';
-// import { contextMiddleware } from '../../utils/context-middleware';
 
 export const mainRouterV2 = Router();
 
-// mainRouterV2.use(contextMiddleware);
 mainRouterV2.use(verifyToken);
 
 // api/v2/plans
