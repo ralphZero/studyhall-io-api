@@ -13,7 +13,6 @@ const getAllPlansFromDb = async (): Promise<Plan[]> => {
   const db = await getDb();
   const user = UserContext.get();
   const query = { userId: user?.uid };
-  console.log(user);
   const plans = await db.collection<Plan>('plans').find(query).toArray();
   return plans;
 };
