@@ -2,16 +2,18 @@ export interface Task {
   id?: string;
   planId: string;
   title: string;
-  labels: Label[];
+  labels?: Label[];
   priority: number;
   deadline?: string;
   description?: string;
-  todos: Todo[];
+  todos?: Todo[];
   timestamp: string;
   progress: number;
   todosCount: number;
   todosCompletedCount: number;
   isCompleted: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Todo {
