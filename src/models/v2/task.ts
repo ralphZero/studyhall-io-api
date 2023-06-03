@@ -1,5 +1,6 @@
 export interface Task {
   id?: string;
+  planId: string;
   title: string;
   labels: Label[];
   priority: number;
