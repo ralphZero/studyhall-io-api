@@ -7,6 +7,6 @@ export const getAllTasksByPlan = async (req: Request, res: Response) => {
     const tasks = await TaskServices.getAllTaskOfPlan(planId);
     res.status(200).send({ sucess: true, data: tasks, error: null });
   } catch (e) {
-    res.status(200).send({ sucess: false, data: null, error: e });
+    res.status(500).send({ sucess: false, data: null, error: e });
   }
 };

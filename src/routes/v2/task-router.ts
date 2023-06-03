@@ -6,3 +6,5 @@ import { TaskController } from '../../controllers';
 export const taskRouter = Router();
 
 taskRouter.get(endpoints.route.base, TaskController.getAllTasksByPlan);
+
+taskRouter.post(endpoints.route.base, TaskController.postNewTaskByPlan);
