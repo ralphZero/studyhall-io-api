@@ -1,9 +1,9 @@
 name: Log Commit Messages
 
 on:
-  push:
-    branches:
-      - develop
+  pull_request:
+    types:
+      - opened
 
 jobs:
   log_commit_messages:
