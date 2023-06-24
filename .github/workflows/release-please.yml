@@ -19,8 +19,9 @@ jobs:
           git log --pretty=format:"- %s (%an)" >> CHANGELOG.md
 
       - name: Commit and Push Changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Update CHANGELOG.md
-          commit_options: '--no-verify'
-          branch: ${{ github.ref }}
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add CHANGELOG.md
+          git commit -m "Update CHANGELOG.md"
+          git push
