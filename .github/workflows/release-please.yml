@@ -1,19 +1,26 @@
+name: Log Commit Messages
+
 on:
   push:
     branches:
       - develop
 
-permissions:
-  contents: write
-  pull-requests: write
-
-name: release-please
-
 jobs:
-  release-please:
+  log_commit_messages:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: google-github-actions/release-please-action@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Log Commit Messages
+        run: |
+          echo "# Changelog" > CHANGELOG.md
+          git log --pretty=format:"- %s (%an)" >> CHANGELOG.md
+
+      - name: Commit and Push Changes
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          release-type: node
-          package-name: release-please-action
+          commit_message: Update CHANGELOG.md
+          commit_options: '--no-verify'
+          branch: ${{ github.ref }}
