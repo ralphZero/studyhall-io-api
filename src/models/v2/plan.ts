@@ -1,3 +1,5 @@
+import { TaskIdObj } from './taskIdObj';
+
 export interface Plan {
   id?: string;
   userId: string;
@@ -8,4 +10,5 @@ export interface Plan {
   startTimestamp: string;
   endTimestamp: string;
   progress: number;
+  taskIdObj: TaskIdObj;
 }
