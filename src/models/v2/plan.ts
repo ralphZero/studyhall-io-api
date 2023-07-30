@@ -10,5 +10,5 @@ export interface Plan {
   startTimestamp: string;
   endTimestamp: string;
   progress: number;
-  taskIdObj: TaskIdObj;
+  taskIdObj?: TaskIdObj;
 }
