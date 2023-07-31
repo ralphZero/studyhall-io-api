@@ -1,3 +1,3 @@
 export interface TaskIdObj {
-  [k: string]: string[];
+  [k: number]: string[];
 }
