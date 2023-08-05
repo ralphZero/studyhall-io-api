@@ -18,7 +18,7 @@ export const updatePlanTaskIds = async (req: Request, res: Response) => {
       throw new HttpException(400, 'Bad request', error.details);
     }
 
-    const result = PlanServices.updateOneOrManyTaskIds(payload);
+    const result = await PlanServices.updateOneOrManyTaskIds(payload);
 
     res.status(201).send({ success: true, data: result, error: null });
   } catch (e) {
