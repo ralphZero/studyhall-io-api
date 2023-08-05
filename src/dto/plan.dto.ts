@@ -23,5 +23,5 @@ export const createPlanDtoValidation = Validator.object({
 
 export const updateTaskIdsDtoValidation = Validator.object({
   planId: Validator.string().required(),
-  taskIdsObjs: Validator.object(),
+  taskIdsObj: Validator.object(),
 });
