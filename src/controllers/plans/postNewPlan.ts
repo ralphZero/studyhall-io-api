@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import { PlanServices } from '../../services/v2/plans';
-import { createPlanDto, createPlanDtoValidation } from '../../dto/plan.dto';
+import { CreatePlanDto, createPlanDtoValidation } from '../../dto/plan.dto';
 import { HttpException } from '../../utils/http-error';
 
 export const postNewPlan = async (req: Request, res: Response) => {
   try {
-    const planDto = req.body as createPlanDto;
+    const planDto = req.body as CreatePlanDto;
 
     const { error } = createPlanDtoValidation.validate(planDto);
     if (error) {
