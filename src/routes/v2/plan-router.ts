@@ -8,3 +8,5 @@ export const planRouter = Router();
 planRouter.get(endpoints.route.base, PlanController.getAllPlans);
 
 planRouter.post(endpoints.route.base, PlanController.postNewPlan);
+
+planRouter.patch(endpoints.route.byPlanId, PlanController.updatePlanTaskIds);
