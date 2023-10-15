@@ -1,13 +1,21 @@
-import { InsertOneResult, ObjectId, UpdateResult } from 'mongodb';
+import { DeleteResult, InsertOneResult, ObjectId, UpdateResult } from 'mongodb';
 import { getDb } from '../../../db/dbconnect';
 import { Plan } from '../../../models/v2/plan';
 import { UserContext } from '../../../utils/user-context';
-import { CreatePlanDto, UpdateTaskIdsDto } from '../../../dto/plan.dto';
+import {
+  CreatePlanDto,
+  DeletePlanDto,
+  UpdateTaskIdsDto,
+} from '../../../dto/plan.dto';
+import { Task } from '../../../models/v2/task';
 
 interface PlanServiceType {
   getAllPlansFromDb(): Promise<Plan[]>;
   addOnePlanToDb(planDto: CreatePlanDto): Promise<InsertOneResult<Document>>;
   updateOneOrManyTaskIds(taskIdDto: UpdateTaskIdsDto): Promise<UpdateResult>;
+  removeOnePlanWithTasksFromDb(
+    deletePlanDto: DeletePlanDto
+  ): Promise<DeleteResult>;
 }
 
 const getAllPlansFromDb = async (): Promise<Plan[]> => {
@@ -46,8 +54,21 @@ const updateOneOrManyTaskIds = async (taskIdDto: UpdateTaskIdsDto) => {
   return result;
 };
 
+const removeOnePlanWithTasksFromDb = async ({ planId }: DeletePlanDto) => {
+  const db = await getDb();
+  const userId = UserContext.get()?.uid;
+  const query = { userId, _id: new ObjectId(planId) };
+  const result = await db.collection<Plan>('plans').deleteMany(query);
+  if (result?.acknowledged) {
+    const taskQuery = { _id: new ObjectId(planId) };
+    db.collection<Task>('tasks').deleteMany(taskQuery);
+  }
+  return result;
+};
+
 export const PlanServices: PlanServiceType = {
   getAllPlansFromDb,
   addOnePlanToDb,
   updateOneOrManyTaskIds,
+  removeOnePlanWithTasksFromDb,
 };

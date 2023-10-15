@@ -13,6 +13,10 @@ export interface UpdateTaskIdsDto {
   taskIdsObj: TaskIdObj;
 }
 
+export interface DeletePlanDto {
+  planId: string;
+}
+
 // Validations
 export const createPlanDtoValidation = Validator.object({
   title: Validator.string().required(),
@@ -24,4 +28,8 @@ export const createPlanDtoValidation = Validator.object({
 export const updateTaskIdsDtoValidation = Validator.object({
   planId: Validator.string().required(),
   taskIdsObj: Validator.object(),
+});
+
+export const deletePlanDtoValidation = Validator.object({
+  planId: Validator.string().required(),
 });

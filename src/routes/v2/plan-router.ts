@@ -10,3 +10,5 @@ planRouter.get(endpoints.route.base, PlanController.getAllPlans);
 planRouter.post(endpoints.route.base, PlanController.postNewPlan);
 
 planRouter.patch(endpoints.route.byPlanId, PlanController.updatePlanTaskIds);
+
+planRouter.delete(endpoints.route.base, PlanController.deletePlan);
