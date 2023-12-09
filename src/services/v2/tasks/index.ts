@@ -53,7 +53,7 @@ const addOneTaskToPlan = async (createTaskDto: CreateTaskDto) => {
   const query = { userId, _id: new ObjectId(createTaskDto.planId) };
   const taskIdQuery = `taskIdObj.${createTaskDto.timestamp}`;
   await db.collection<Plan>('plans').updateOne(query, {
-    $push: { [taskIdQuery]: result.insertedId },
+    $push: { [taskIdQuery]: result.insertedId.toString() },
   });
   return result;
 };
