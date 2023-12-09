@@ -10,10 +10,6 @@ export interface CreateTaskDto {
   description?: string;
   todos?: Todo[];
   timestamp: string;
-  progress: number;
-  todosCount?: number;
-  todosCompletedCount?: number;
-  isCompleted?: boolean;
 }
 
 export const createTaskDtoValidation = Validator.object({
@@ -25,8 +21,4 @@ export const createTaskDtoValidation = Validator.object({
   description: Validator.string().optional(),
   todos: Validator.array<Todo>().optional(),
   timestamp: Validator.date().timestamp().cast('string').required(),
-  progress: Validator.number().required(),
-  todosCount: Validator.number().optional(),
-  todosCompletedCount: Validator.number().optional(),
-  isCompleted: Validator.boolean().optional(),
 });
