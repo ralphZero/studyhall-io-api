@@ -17,8 +17,9 @@ export interface Task {
 }
 
 export interface Todo {
-  completed: boolean;
-  todo: string;
+  checked: boolean;
+  label: string;
+  id: string;
 }
 
 export interface Label {
