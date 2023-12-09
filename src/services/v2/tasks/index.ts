@@ -1,7 +1,9 @@
-import { InsertOneResult } from 'mongodb';
+import { InsertOneResult, ObjectId } from 'mongodb';
 import { getDb } from '../../../db/dbconnect';
 import { CreateTaskDto } from '../../../dto/task.dto';
 import { Task } from '../../../models/v2/task';
+import { UserContext } from '../../../utils/user-context';
+import { Plan } from '../../../models/v2/plan';
 
 interface TaskServiceType {
   getAllTaskOfPlan(planId: string): Promise<Task[]>;
@@ -46,6 +48,13 @@ const addOneTaskToPlan = async (createTaskDto: CreateTaskDto) => {
   };
 
   const result = await db.collection('tasks').insertOne(task);
+
+  const userId = UserContext.get()?.uid;
+  const query = { userId, _id: new ObjectId(createTaskDto.planId) };
+  const taskIdQuery = `taskIdObj.${createTaskDto.timestamp}`;
+  await db.collection<Plan>('plans').updateOne(query, {
+    $push: { [taskIdQuery]: result.insertedId },
+  });
   return result;
 };
 
