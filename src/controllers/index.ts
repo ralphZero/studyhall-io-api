@@ -4,6 +4,7 @@ import { postNewPlan } from './plans/postNewPlan';
 import { updatePlanTaskIds } from './plans/updatePlanTaskIds';
 import { getAllTasksByPlan } from './tasks/getAllTasksByPlan';
 import { postNewTaskByPlan } from './tasks/postNewTaskByPlan';
+import { updateTaskOfPlan } from './tasks/updateTaskOfPlan';
 
 export const PlanController = {
   getAllPlans,
@@ -15,4 +16,5 @@ export const PlanController = {
 export const TaskController = {
   getAllTasksByPlan,
   postNewTaskByPlan,
+  updateTaskOfPlan,
 };

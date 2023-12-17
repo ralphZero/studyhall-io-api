@@ -19,7 +19,7 @@ interface PlanServiceType {
 }
 
 const getAllPlansFromDb = async (): Promise<Plan[]> => {
-  const db = await getDb();
+  const { db } = await getDb();
   const user = UserContext.get();
   const query = { userId: user?.uid };
   const plans = await db.collection<Plan>('plans').find(query).toArray();
@@ -27,20 +27,28 @@ const getAllPlansFromDb = async (): Promise<Plan[]> => {
 };
 
 const addOnePlanToDb = async (planDto: CreatePlanDto) => {
-  const db = await getDb();
+  const { db } = await getDb();
   const user = UserContext.get();
   const createdAt = new Date().getTime().toString();
   const updatedAt = new Date().getTime().toString();
-  const progress = 0;
+  const tasksCount = 0;
+  const completedTasksCount = 0;
   const userId = user?.uid as string;
 
-  const plan: Plan = { ...planDto, createdAt, updatedAt, progress, userId };
+  const plan: Plan = {
+    ...planDto,
+    createdAt,
+    updatedAt,
+    tasksCount,
+    completedTasksCount,
+    userId,
+  };
   const result = await db.collection('plans').insertOne(plan);
   return result;
 };
 
 const updateOneOrManyTaskIds = async (taskIdDto: UpdateTaskIdsDto) => {
-  const db = await getDb();
+  const { db } = await getDb();
   const userId = UserContext.get()?.uid;
   const updatedAt = new Date().getTime().toString();
   const query = { userId, _id: new ObjectId(taskIdDto.planId) };
@@ -55,7 +63,7 @@ const updateOneOrManyTaskIds = async (taskIdDto: UpdateTaskIdsDto) => {
 };
 
 const removeOnePlanWithTasksFromDb = async ({ planId }: DeletePlanDto) => {
-  const db = await getDb();
+  const { db } = await getDb();
   const userId = UserContext.get()?.uid;
   const query = { userId, _id: new ObjectId(planId) };
   const result = await db.collection<Plan>('plans').deleteMany(query);

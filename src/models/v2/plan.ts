@@ -9,6 +9,7 @@ export interface Plan {
   updatedAt: string;
   startTimestamp: string;
   endTimestamp: string;
-  progress: number;
+  tasksCount: number;
+  completedTasksCount: number;
   taskIdObj?: TaskIdObj;
 }
