@@ -63,15 +63,30 @@ const updateOneOrManyTaskIds = async (taskIdDto: UpdateTaskIdsDto) => {
 };
 
 const removeOnePlanWithTasksFromDb = async ({ planId }: DeletePlanDto) => {
-  const { db } = await getDb();
+  const { db, client } = await getDb();
   const userId = UserContext.get()?.uid;
-  const query = { userId, _id: new ObjectId(planId) };
-  const result = await db.collection<Plan>('plans').deleteMany(query);
-  if (result?.acknowledged) {
-    const taskQuery = { _id: new ObjectId(planId) };
-    db.collection<Task>('tasks').deleteMany(taskQuery);
-  }
-  return result;
+  let response: DeleteResult = { acknowledged: false, deletedCount: 0 };
+
+  // Delete plan and tasks in a transaction
+  await client
+    .withSession(async (session) =>
+      session.withTransaction(async () => {
+        const planCollection = db.collection<Plan>('plans');
+        const taskCollection = db.collection<Task>('tasks');
+
+        const planQuery = { userId, _id: new ObjectId(planId) };
+        await planCollection.deleteMany(planQuery, { session });
+
+        const taskQuery = { _id: new ObjectId(planId) };
+        const deleteResult = await taskCollection.deleteMany(taskQuery, {
+          session,
+        });
+
+        response = deleteResult;
+      })
+    )
+    .finally(() => client.close());
+  return response;
 };
 
 export const PlanServices: PlanServiceType = {

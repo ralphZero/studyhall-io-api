@@ -1,4 +1,4 @@
-import { InsertOneResult, ObjectId } from 'mongodb';
+import { InsertOneResult, ObjectId, UpdateResult } from 'mongodb';
 import { getDb } from '../../../db/dbconnect';
 import { CreateTaskDto, UpdateTaskDto } from '../../../dto/task.dto';
 import { Task } from '../../../models/v2/task';
@@ -10,7 +10,7 @@ interface TaskServiceType {
   addOneTaskToPlan(
     createTaskDto: CreateTaskDto
   ): Promise<InsertOneResult<Document>>;
-  updateTaskOfPlan(updateTaskDto: UpdateTaskDto): Promise<void>;
+  updateTaskOfPlan(updateTaskDto: UpdateTaskDto): Promise<UpdateResult>;
 }
 
 const getAllTaskOfPlan = async (planId: string): Promise<Task[]> => {
@@ -21,7 +21,7 @@ const getAllTaskOfPlan = async (planId: string): Promise<Task[]> => {
 };
 
 const addOneTaskToPlan = async (createTaskDto: CreateTaskDto) => {
-  const { db } = await getDb();
+  const { db, client } = await getDb();
   const createdAt = new Date().getTime().toString();
   const updatedAt = new Date().getTime().toString();
   const todos = createTaskDto.todos ?? [];
@@ -48,21 +48,35 @@ const addOneTaskToPlan = async (createTaskDto: CreateTaskDto) => {
     updatedAt,
   };
 
-  const result = await db.collection('tasks').insertOne(task);
-
   const userId = UserContext.get()?.uid;
-  const query = { userId, _id: new ObjectId(createTaskDto.planId) };
-  const taskIdQuery = `taskIdObj.${createTaskDto.timestamp}`;
-  await db.collection<Plan>('plans').updateOne(query, {
-    $push: { [taskIdQuery]: result.insertedId.toString() },
-    $inc: { taskCount: 1 },
-    ...(isCompleted && { $inc: { completedTaskCount: 1 } }),
-  });
-  return result;
+  let response: InsertOneResult = {
+    acknowledged: false,
+    insertedId: new ObjectId(),
+  };
+
+  await client.withSession(async (session) =>
+    session.withTransaction(async () => {
+      const taskCollection = db.collection<Task>('tasks');
+      const planCollection = db.collection<Plan>('plans');
+
+      const result = await taskCollection.insertOne(task);
+      const query = { userId, _id: new ObjectId(createTaskDto.planId) };
+      const taskIdQuery = `taskIdObj.${createTaskDto.timestamp}`;
+
+      await planCollection.updateOne(query, {
+        $push: { [taskIdQuery]: result.insertedId.toString() },
+        $inc: { taskCount: 1 },
+        ...(isCompleted && { $inc: { completedTaskCount: 1 } }),
+      });
+
+      response = result;
+    })
+  );
+  return response;
 };
 
 const updateTaskOfPlan = async (updateTaskDto: UpdateTaskDto) => {
-  const { db } = await getDb();
+  const { db, client } = await getDb();
   const updatedAt = new Date().getTime().toString();
   const todos = updateTaskDto.todos ?? [];
   const labels = updateTaskDto.labels ?? [];
@@ -74,6 +88,7 @@ const updateTaskOfPlan = async (updateTaskDto: UpdateTaskDto) => {
   const progress = todosCount > 0 ? todosCompletedCount / todosCount : 0;
   const isCompleted = progress === 1;
 
+  const userId = UserContext.get()?.uid;
   const task: Task = {
     ...updateTaskDto,
     todosCompletedCount,
@@ -87,14 +102,49 @@ const updateTaskOfPlan = async (updateTaskDto: UpdateTaskDto) => {
     updatedAt,
   };
 
-  const query = { _id: new ObjectId(task.id) };
-  const update = { $set: task };
-  const taskUpdate = await db.collection('tasks').updateOne(query, update);
+  let response: UpdateResult = {
+    acknowledged: false,
+    upsertedCount: 0,
+    upsertedId: new ObjectId(),
+    matchedCount: 0,
+    modifiedCount: 0,
+  };
 
-  if (taskUpdate.acknowledged) {
-    const filter = { _id: new ObjectId(task.planId) };
-    await db.collection('plans').findOneAndUpdate(filter, {});
-  }
+  await client.withSession(async (session) =>
+    session.withTransaction(async () => {
+      const taskCollection = db.collection<Task>('tasks');
+      const planCollection = db.collection<Plan>('plans');
+
+      const taskQuery = { _id: new ObjectId(task.id) };
+
+      const taskPreUpdate = await taskCollection.findOne(taskQuery);
+
+      const update = { $set: task };
+      const taskUpdate = await db
+        .collection('tasks')
+        .updateOne(taskQuery, update);
+
+      // update plan counters
+      if (taskPreUpdate) {
+        const taskPreUpdateIsCompleted =
+          taskPreUpdate?.todosCompletedCount / taskPreUpdate?.todosCount === 1;
+
+        const completedTaskCount =
+          isCompleted !== taskPreUpdateIsCompleted ? (isCompleted ? 1 : -1) : 0;
+
+        if (completedTaskCount !== 0) {
+          const planQuery = { userId, _id: new ObjectId(task.planId) };
+          await planCollection.updateOne(planQuery, {
+            $inc: { completedTaskCount },
+          });
+        }
+      }
+
+      response = taskUpdate;
+    })
+  );
+
+  return response;
 };
 
 export const TaskServices: TaskServiceType = {
