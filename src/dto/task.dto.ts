@@ -40,7 +40,7 @@ export interface UpdateTaskDto {
 
 export const updateTaskDtoValidation = Validator.object({
   planId: Validator.string().alphanum().required(),
-  id: Validator.string().alphanum().required(),
+  _id: Validator.string().alphanum().required(),
   title: Validator.string().required(),
   labels: Validator.array<Label>().optional(),
   priority: Validator.number().optional(),
