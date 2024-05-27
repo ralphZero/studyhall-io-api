@@ -89,8 +89,10 @@ const updateTaskOfPlan = async (updateTaskDto: UpdateTaskDto) => {
   const isCompleted = progress === 1;
 
   const userId = UserContext.get()?.uid;
+  const { _id: taskId, ...otherUpdateTaskDtoValues } = updateTaskDto;
+
   const task: Task = {
-    ...updateTaskDto,
+    ...otherUpdateTaskDtoValues,
     todosCompletedCount,
     todosCount,
     todos,
@@ -110,19 +112,23 @@ const updateTaskOfPlan = async (updateTaskDto: UpdateTaskDto) => {
     modifiedCount: 0,
   };
 
-  await client.withSession(async (session) =>
-    session.withTransaction(async () => {
+  const session = client.startSession();
+
+  try {
+    await session.withTransaction(async () => {
       const taskCollection = db.collection<Task>('tasks');
       const planCollection = db.collection<Plan>('plans');
 
-      const taskQuery = { _id: new ObjectId(task.id) };
+      const taskQuery = { _id: new ObjectId(taskId) };
 
-      const taskPreUpdate = await taskCollection.findOne(taskQuery);
+      const taskPreUpdate = await taskCollection.findOne(taskQuery, {
+        session,
+      });
 
       const update = { $set: task };
       const taskUpdate = await db
         .collection('tasks')
-        .updateOne(taskQuery, update);
+        .updateOne(taskQuery, update, { session });
 
       // update plan counters
       if (taskPreUpdate) {
@@ -138,12 +144,18 @@ const updateTaskOfPlan = async (updateTaskDto: UpdateTaskDto) => {
             $inc: { completedTaskCount },
           });
         }
+        response = taskUpdate;
+        return response;
+      } else {
+        await session.abortTransaction();
+        throw new Error('Task not found');
       }
-
-      response = taskUpdate;
-    })
-  );
-
+    });
+  } catch (e) {
+    console.error('Transaction aborted. Error: ', e);
+  } finally {
+    await session.endSession();
+  }
   return response;
 };
 
