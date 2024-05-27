@@ -48,6 +48,4 @@ export const updateTaskDtoValidation = Validator.object({
   description: Validator.string().optional(),
   todos: Validator.array<Todo>().optional(),
   timestamp: Validator.date().timestamp().cast('string').required(),
-  createdAt: Validator.date().timestamp().cast('string').required(),
-  updatedAt: Validator.date().timestamp().cast('string').required(),
 });
