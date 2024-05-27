@@ -59,15 +59,19 @@ const addOneTaskToPlan = async (createTaskDto: CreateTaskDto) => {
       const taskCollection = db.collection<Task>('tasks');
       const planCollection = db.collection<Plan>('plans');
 
-      const result = await taskCollection.insertOne(task);
+      const result = await taskCollection.insertOne(task, { session });
       const query = { userId, _id: new ObjectId(createTaskDto.planId) };
       const taskIdQuery = `taskIdObj.${createTaskDto.timestamp}`;
 
-      await planCollection.updateOne(query, {
-        $push: { [taskIdQuery]: result.insertedId.toString() },
-        $inc: { taskCount: 1 },
-        ...(isCompleted && { $inc: { completedTaskCount: 1 } }),
-      });
+      await planCollection.updateOne(
+        query,
+        {
+          $push: { [taskIdQuery]: result.insertedId.toString() },
+          $inc: { taskCount: 1 },
+          ...(isCompleted && { $inc: { completedTaskCount: 1 } }),
+        },
+        { session }
+      );
 
       response = result;
     })
