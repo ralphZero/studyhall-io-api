@@ -26,7 +26,7 @@ export const createTaskDtoValidation = Validator.object({
 // update task
 export interface UpdateTaskDto {
   planId: string;
-  id: string;
+  _id: string;
   title: string;
   labels?: Label[];
   priority: number;
