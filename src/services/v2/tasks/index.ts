@@ -90,7 +90,7 @@ const updateTaskOfPlan = async (updateTaskDto: UpdateTaskDto) => {
   const todosCompletedCount =
     updateTaskDto.todos?.filter((todo) => todo.checked).length ?? 0;
   const progress = todosCount > 0 ? todosCompletedCount / todosCount : 0;
-  const isCompleted = progress === 1;
+  const isCompleted = updateTaskDto.isCompleted ? true : progress === 1;
 
   const userId = UserContext.get()?.uid;
   const { _id: taskId, ...otherUpdateTaskDtoValues } = updateTaskDto;

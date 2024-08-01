@@ -32,6 +32,7 @@ export interface UpdateTaskDto {
   priority: number;
   deadline?: string;
   description?: string;
+  isCompleted?: boolean;
   todos?: Todo[];
   timestamp: string;
   createdAt: string;
